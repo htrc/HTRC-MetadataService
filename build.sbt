@@ -1,5 +1,6 @@
 import play.sbt.routes.RoutesKeys
 import sbtbuildinfo.BuildInfoPlugin
+import com.typesafe.sbt.packager.docker._
 
 showCurrentGitBranch
 
@@ -37,9 +38,18 @@ lazy val commonSettings = Seq(
   )
 )
 
+lazy val dockerSettings = Seq(
+    maintainer in Docker := "Boris Capitanu <capitanu@illinois.edu>",
+    dockerBaseImage := "docker-registry.htrc.indiana.edu/java8",
+    dockerExposedPorts := Seq(9000),
+    dockerRepository := Some("docker-registry.htrc.indiana.edu"),
+    dockerUpdateLatest := true
+)
+
 lazy val `htrc-metadata-service` = (project in file("."))
-  .enablePlugins(PlayScala, BuildInfoPlugin, GitVersioning, GitBranchPrompt, JavaAppPackaging)
+  .enablePlugins(PlayScala, BuildInfoPlugin, GitVersioning, GitBranchPrompt, JavaAppPackaging, DockerPlugin)
   .settings(commonSettings)
+  .settings(dockerSettings)
   .settings(
     name := "HTRC-MetadataService",
     routesGenerator := InjectedRoutesGenerator,

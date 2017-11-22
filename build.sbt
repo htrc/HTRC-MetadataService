@@ -1,6 +1,4 @@
-import play.sbt.routes.RoutesKeys
 import sbtbuildinfo.BuildInfoPlugin
-import com.typesafe.sbt.packager.docker._
 
 showCurrentGitBranch
 
@@ -10,7 +8,7 @@ lazy val commonSettings = Seq(
   organization := "org.hathitrust.htrc",
   organizationName := "HathiTrust Research Center",
   organizationHomepage := Some(url("https://www.hathitrust.org/htrc")),
-  scalaVersion := "2.11.11",
+  scalaVersion := "2.12.4",
   scalacOptions ++= Seq(
     "-feature",
     "-language:postfixOps",
@@ -52,14 +50,13 @@ lazy val `htrc-metadata-service` = (project in file("."))
   .settings(dockerSettings)
   .settings(
     name := "HTRC-MetadataService",
-    routesGenerator := InjectedRoutesGenerator,
-    RoutesKeys.routesImport += "play.modules.reactivemongo.PathBindables._",
     libraryDependencies ++= Seq(
+      guice,
       filters,
-      "org.hathitrust.htrc"           %% "pairtree-helper"      % "3.2",
-      "net.codingwell"                %% "scala-guice"          % "4.1.0",
-      "org.reactivemongo"             %% "play2-reactivemongo"  % "0.12.3",
-      "org.scalatestplus.play"        %% "scalatestplus-play"   % "1.5.1" % Test
+//      "com.typesafe.play"             %% "play-json"            % "2.6.6",
+//      "com.typesafe.play"             %% "play-iteratees"       % "2.6.1",
+      "org.reactivemongo"             %% "play2-reactivemongo"  % "0.12.7-play26",
+      "org.scalatestplus.play"        %% "scalatestplus-play"   % "3.1.2"   % Test
     )
   )
 

@@ -1,4 +1,4 @@
-package v1.filters
+package v2.filters
 
 import javax.inject._
 

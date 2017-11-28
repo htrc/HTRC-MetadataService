@@ -32,7 +32,7 @@ class MetadataController @Inject()(metadataDao: MetadataDao,
           if (req.body == null || req.body.isEmpty)
             Future.successful(BadRequest)
           else {
-            val ids = req.body.split("""\|""").toSet
+            val ids = req.body.split("""[\|\n]""").toSet
             metadataDao.getMetadata(ids).map(result => Ok(Json.toJsObject(result)))
           }
       }

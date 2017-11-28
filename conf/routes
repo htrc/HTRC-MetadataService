@@ -2,5 +2,5 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-GET   /v1/metadata        v1.controllers.MetadataController.getMetadata(ids)
-POST  /v1/metadata        v1.controllers.MetadataController.getMultiMetadata
+GET         /v2/metadata        v2.controllers.MetadataController.getMetadata(ids)
+POST        /v2/metadata        v2.controllers.MetadataController.getMultiMetadata

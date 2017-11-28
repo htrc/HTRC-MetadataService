@@ -2,7 +2,8 @@ package v2.controllers
 
 import javax.inject.Inject
 
-import play.api.libs.json.Json
+import akka.stream.scaladsl.{Source, StreamConverters}
+import play.api.http.HttpEntity
 import play.api.mvc._
 import v2.dao.MetadataDao
 
@@ -20,7 +21,9 @@ class MetadataController @Inject()(metadataDao: MetadataDao,
             Future.successful(BadRequest)
           else {
             val ids = idsCsv.split("""\|""").toSet
-            metadataDao.getMetadata(ids).map(result => Ok(Json.toJsObject(result)))
+            metadataDao.getMetadata(ids).map(publisher =>
+              Ok.chunked(Source.fromPublisher(publisher))
+            )
           }
       }
     }
@@ -33,7 +36,9 @@ class MetadataController @Inject()(metadataDao: MetadataDao,
             Future.successful(BadRequest)
           else {
             val ids = req.body.split("""[\|\n]""").toSet
-            metadataDao.getMetadata(ids).map(result => Ok(Json.toJsObject(result)))
+            metadataDao.getMetadata(ids).map(publisher =>
+              Ok.chunked(Source.fromPublisher(publisher))
+            )
           }
       }
     }

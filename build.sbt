@@ -53,6 +53,10 @@ lazy val `htrc-metadata-service` = (project in file("."))
     libraryDependencies ++= Seq(
       guice,
       filters,
+      "com.typesafe.play"             %% "play-streams"                     % "2.6.7",
+      "com.typesafe.play"             %% "play-iteratees"                   % "2.6.1",
+      "com.typesafe.play"             %% "play-iteratees-reactive-streams"  % "2.6.1",
+      "org.reactivemongo"             %% "reactivemongo-iteratees"          % "0.12.7",
       "org.reactivemongo"             %% "play2-reactivemongo"              % "0.12.7-play26",
       "org.scalatestplus.play"        %% "scalatestplus-play"               % "3.1.2"   % Test
     )

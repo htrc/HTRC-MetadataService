@@ -27,8 +27,8 @@ where `HOST` is the desired hostname or IP to bind to, and `PORT` is the desired
 
 ## Request format
 ```
-GET   /api/v1/metadata?ids=ID1|ID2|ID3...
-POST  /api/v1/metadata
+GET   /api/v2/metadata?ids=ID1|ID2|ID3...
+POST  /api/v2/metadata
       where the body contains:
       ID1|ID2|ID3|...
       or
@@ -61,7 +61,7 @@ Note: The service respects the HTTP `Accept` header.
 
 # Example
 
-`curl -v -X GET 'http://HOSTNAME:PORT/api/v2/metadata?ids=hvd.32044038401683|SOMEBADID'`
+`curl -v -X GET 'http://HOSTNAME:PORT/api/v2/metadata?ids=hvd.32044038401683|SOMEMISSINGID'`
 
 Returns:
 ```
@@ -127,7 +127,7 @@ Returns:
         }
     },
     "missing": [
-        "SOMEBADID"
+        "SOMEMISSINGID"
     ]
 }
 ```

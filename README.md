@@ -19,7 +19,7 @@ Copy the folder `target/universal/stage/` to the deployment location and rename 
 # Run
 *Note:* You must have the environment variables set before running (or edited the `application.conf` accordingly)
 ```bash
-$DEPLOY_DIR/bin/htrc-metadata-service -Dhttp.address=HOST -Dhttp.port=PORT -Dplay.http.context=/api
+$DEPLOY_DIR/bin/htrc-metadataservice -Dhttp.address=HOST -Dhttp.port=PORT -Dplay.http.context=/api
 ```
 where `HOST` is the desired hostname or IP to bind to, and `PORT` is the desired port to run on.
 

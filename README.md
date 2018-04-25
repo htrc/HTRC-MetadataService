@@ -8,6 +8,12 @@ Then find the result in `target/universal/stage/`
 # Deploy
 Copy the folder `target/universal/stage/` to the deployment location and rename as desired (henceforth referred to as `DEPLOY_DIR`).
 
+# Docker
+You can create a Docker image with:
+`sbt docker:publishLocal`
+
+For more Docker capabilities, see: https://www.scala-sbt.org/sbt-native-packager/formats/docker.html#tasks
+
 # Setup
 0. Generate an application secret by running `sbt playGenerateSecret`
 1. Set `MONGODB_URI` environment variable to point to the Mongo instance holding the metadata

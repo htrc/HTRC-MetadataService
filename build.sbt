@@ -8,12 +8,12 @@ lazy val commonSettings = Seq(
   organization := "org.hathitrust.htrc",
   organizationName := "HathiTrust Research Center",
   organizationHomepage := Some(url("https://www.hathitrust.org/htrc")),
-  scalaVersion := "2.12.4",
+  scalaVersion := "2.12.6",
   scalacOptions ++= Seq(
     "-feature",
+    "-deprecation",
     "-language:postfixOps",
-    "-language:implicitConversions",
-    "-target:jvm-1.8"
+    "-language:implicitConversions"
   ),
   resolvers ++= Seq(
     "I3 Repository" at "http://nexus.htrc.illinois.edu/content/groups/public",
@@ -53,7 +53,7 @@ lazy val `htrc-metadata-service` = (project in file("."))
     libraryDependencies ++= Seq(
       guice,
       filters,
-      "org.reactivemongo"             %% "play2-reactivemongo"              % "0.12.7-play26",
+      "org.reactivemongo"             %% "play2-reactivemongo"              % "0.13.0-play26",
       "org.scalatestplus.play"        %% "scalatestplus-play"               % "3.1.2"   % Test
     )
   )

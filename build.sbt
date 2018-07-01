@@ -53,7 +53,7 @@ lazy val `htrc-metadata-service` = (project in file("."))
     libraryDependencies ++= Seq(
       guice,
       filters,
-      "org.reactivemongo"             %% "play2-reactivemongo"              % "0.13.0-play26",
+      "org.reactivemongo"             %% "play2-reactivemongo"              % "0.14.0-play26",
       "org.scalatestplus.play"        %% "scalatestplus-play"               % "3.1.2"   % Test
     )
   )

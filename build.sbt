@@ -24,7 +24,10 @@ lazy val commonSettings = Seq(
     ("Git-Version", git.gitDescribedVersion.value.getOrElse("N/A")),
     ("Git-Dirty", git.gitUncommittedChanges.value.toString),
     ("Build-Date", new java.util.Date().toString)
-  ),
+  )
+)
+
+lazy val wartRemoverSettings = Seq(
   Compile / compile / wartremoverWarnings ++= Warts.unsafe.diff(Seq(
     Wart.DefaultArguments,
     Wart.NonUnitStatements,
@@ -75,6 +78,7 @@ lazy val dockerSettings = Seq(
 lazy val `htrc-metadata-service` = (project in file("."))
   .enablePlugins(PlayScala, BuildInfoPlugin, GitVersioning, GitBranchPrompt, JavaAppPackaging, DockerPlugin)
   .settings(commonSettings)
+  .settings(wartRemoverSettings)
   .settings(buildInfoSettings)
   .settings(ammoniteSettings)
   .settings(dockerSettings)

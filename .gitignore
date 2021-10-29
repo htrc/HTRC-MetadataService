@@ -1,5 +1,12 @@
-/logs/
+/.clover/
+/.idea/
+*.iml
+/.bsp/
+/.metals/
+.bloop/
+metals.sbt
+*.sublime-workspace
 target/
 project/project/
-/.idea/
 /RUNNING_PID
+/logs/

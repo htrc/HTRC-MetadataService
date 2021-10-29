@@ -1,12 +1,10 @@
 package v2.controllers
 
-import javax.inject.Inject
-
-import akka.stream.scaladsl.{Source, StreamConverters}
-import play.api.http.HttpEntity
+import akka.stream.scaladsl.Source
 import play.api.mvc._
 import v2.dao.MetadataDao
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class MetadataController @Inject()(metadataDao: MetadataDao,

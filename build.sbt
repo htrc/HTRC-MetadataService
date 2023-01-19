@@ -6,7 +6,7 @@ lazy val commonSettings = Seq(
   organization := "org.hathitrust.htrc",
   organizationName := "HathiTrust Research Center",
   organizationHomepage := Some(url("https://www.hathitrust.org/htrc")),
-  scalaVersion := "2.13.6",
+  scalaVersion := "2.13.10",
   scalacOptions ++= Seq(
     "-feature",
     "-deprecation",
@@ -27,14 +27,22 @@ lazy val commonSettings = Seq(
   )
 )
 
-lazy val wartRemoverSettings = Seq(
-  Compile / compile / wartremoverWarnings ++= Warts.unsafe.diff(Seq(
-    Wart.DefaultArguments,
-    Wart.NonUnitStatements,
-    Wart.Any,
-    Wart.TryPartial,
-    Wart.StringPlusAny
-  ))
+lazy val ammoniteSettings = Seq(
+  libraryDependencies +=
+    {
+      val version = scalaBinaryVersion.value match {
+        case "2.10" => "1.0.3"
+        case _ ⇒  "2.5.6"
+      }
+      "com.lihaoyi" % "ammonite" % version % Test cross CrossVersion.full
+    },
+  Test / sourceGenerators += Def.task {
+    val file = (Test / sourceManaged).value / "amm.scala"
+    IO.write(file, """object amm extends App { ammonite.Main.main(args) }""")
+    Seq(file)
+  }.taskValue,
+  connectInput := true,
+  outputStrategy := Some(StdoutOutput)
 )
 
 lazy val buildInfoSettings = Seq(
@@ -49,24 +57,6 @@ lazy val buildInfoSettings = Seq(
   )
 )
 
-lazy val ammoniteSettings = Seq(
-  libraryDependencies +=
-    {
-      val version = scalaBinaryVersion.value match {
-        case "2.10" => "1.0.3"
-        case _ ⇒  "2.4.0-23-76673f7f"
-      }
-      "com.lihaoyi" % "ammonite" % version % Test cross CrossVersion.full
-    },
-  Test / sourceGenerators += Def.task {
-    val file = (Test / sourceManaged).value / "amm.scala"
-    IO.write(file, """object amm extends App { ammonite.Main.main(args) }""")
-    Seq(file)
-  }.taskValue,
-  connectInput := true,
-  outputStrategy := Some(StdoutOutput)
-)
-
 lazy val dockerSettings = Seq(
     Docker / maintainer := "Boris Capitanu <capitanu@illinois.edu>",
     dockerBaseImage := "docker-registry.htrc.indiana.edu/java8",
@@ -78,7 +68,6 @@ lazy val dockerSettings = Seq(
 lazy val `htrc-metadata-service` = (project in file("."))
   .enablePlugins(PlayScala, BuildInfoPlugin, GitVersioning, GitBranchPrompt, JavaAppPackaging, DockerPlugin)
   .settings(commonSettings)
-  .settings(wartRemoverSettings)
   .settings(buildInfoSettings)
   .settings(ammoniteSettings)
   .settings(dockerSettings)
@@ -87,9 +76,9 @@ lazy val `htrc-metadata-service` = (project in file("."))
     libraryDependencies ++= Seq(
       guice,
       filters,
-      "com.typesafe.play"             %% "play-streams"                     % "2.8.8",
-      "org.reactivemongo"             %% "play2-reactivemongo"              % "1.0.7-play28",
-      "org.reactivemongo"             %% "reactivemongo-akkastream"         % "1.0.7",
+      "com.typesafe.play"             %% "play-streams"                     % "2.8.19",
+      "org.reactivemongo"             %% "play2-reactivemongo"              % "1.1.0-play28-RC6",
+      "org.reactivemongo"             %% "reactivemongo-akkastream"         % "1.0.10",
       "org.scalatestplus.play"        %% "scalatestplus-play"               % "5.1.0"   % Test
     ),
     routesGenerator := InjectedRoutesGenerator

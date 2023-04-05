@@ -32,7 +32,16 @@ where `HOST` is the desired hostname or IP to bind to, and `PORT` is the desired
 
 # API
 
-## Request format
+## Request/response format
+
+Note: The service respects the HTTP `Accept` header.
+The service can return responses in GZIP format by setting `Accept-Encoding: gzip` request header.
+
+
+### Standard
+
+#### Request
+
 ```
 GET   /api/v2/metadata?ids=ID1|ID2|ID3...
 POST  /api/v2/metadata
@@ -44,21 +53,122 @@ POST  /api/v2/metadata
       ID3
       ...
 ```
+Note: For the POST request, `Content-type: text/plain` must be set in the request
+
+#### Response
+```json
+{
+  "found": {
+      "hvd.32044038401683": {
+        ... content of the JSON metadata file for this volume ...
+      },
+      "umn.31951p003004858": {
+        ... content of the JSON metadata file for this volume ...
+      },
+      ...
+  },
+  "missing": [ "hvd.3204403840168x", "badid", ... ]
+}
+```
+
+#### Example
+
+`curl -v -X GET 'http://HOSTNAME:PORT/api/v2/metadata?ids=hvd.32044038401683|SOMEMISSINGID'
+
+Returns:
+```json
+{
+    "found": {
+        "hvd.32044038401683": {
+            "accessRights": "pd",
+            "category": "Greek language and literature. Latin language and literature",
+            "contributor": [
+                {
+                    "id": "http://www.viaf.org/viaf/39611820",
+                    "name": "Buttmann, Ph. (Philipp), 1764-1829.",
+                    "type": "http://id.loc.gov/ontologies/bibframe/Person"
+                },
+                {
+                    "id": "http://www.viaf.org/viaf/74647197",
+                    "name": "Everett, Edward, 1794-1865.",
+                    "type": "http://id.loc.gov/ontologies/bibframe/Person"
+                }
+            ],
+            "dateCreated": 20230222,
+            "genre": "http://id.loc.gov/vocabulary/marcgt/doc",
+            "htid": "hvd.32044038401683",
+            "id": "http://hdl.handle.net/2027/hvd.32044038401683",
+            "language": [
+                "eng",
+                "grc",
+                "ger"
+            ],
+            "lastRightsUpdateDate": 20230115,
+            "lcc": "PA258.B92 1826",
+            "lccn": "10024074",
+            "mainEntityOfPage": [
+                "https://catalog.hathitrust.org/Record/006552339",
+                "http://catalog.hathitrust.org/api/volumes/brief/oclc/4050636.json",
+                "http://catalog.hathitrust.org/api/volumes/full/oclc/4050636.json"
+            ],
+            "oclc": "4050636",
+            "pubDate": 1826,
+            "pubPlace": {
+                "id": "http://id.loc.gov/vocabulary/countries/mau",
+                "name": "Massachusetts",
+                "type": "http://id.loc.gov/ontologies/bibframe/Place"
+            },
+            "publisher": {
+                "id": "http://catalogdata.library.illinois.edu/lod/entities/ProvisionActivityAgent/ht/Cummings,%20Hilliard%20and%20Co.",
+                "name": "Cummings, Hilliard and Co.",
+                "type": "http://id.loc.gov/ontologies/bibframe/Organization"
+            },
+            "schemaVersion": "https://schemas.hathitrust.org/EF_Schema_MetadataSubSchema_v_3.0",
+            "sourceInstitution": {
+                "name": "HVD",
+                "type": "http://id.loc.gov/ontologies/bibframe/Organization"
+            },
+            "title": "Greek grammar for the use of schools /",
+            "type": [
+                "DataFeedItem",
+                "Book"
+            ],
+            "typeOfResource": "http://id.loc.gov/ontologies/bibframe/Text"
+        }
+    },
+    "missing": [
+          "SOMEMISSINGID"
+    ]
+}
+```
+
+### Streaming
+
+#### Request
+
+```
+GET   /api/v2/streaming?ids=ID1|ID2|ID3...
+POST  /api/v2/streaming
+      where the body contains:
+      ID1|ID2|ID3|...
+      or
+      ID1
+      ID2
+      ID3
+      ...
+```
 
 Note: For the POST request, `Content-type: text/plain` must be set in the request
 
-## Response format
+#### Response
 
 The response will come as `Content-type:text/plain` in the [JSON lines](https://jsonlines.org/) format, 
 where each line represents one metadata record. Any volume IDs requested that aren't found will be ignored
 (only the found ones are returned).
 
-Note: The service respects the HTTP `Accept` header.
-      The service can return responses in GZIP format by setting `Accept-Encoding: gzip` request header.
+#### Example
 
-# Example
-
-`curl -v -X GET 'http://HOSTNAME:PORT/api/v2/metadata?ids=hvd.32044038401683|SOMEMISSINGID'`
+`curl -v -X GET 'http://HOSTNAME:PORT/api/v2/streaming?ids=hvd.32044038401683|SOMEMISSINGID'`
 
 Returns:
 ```

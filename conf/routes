@@ -4,3 +4,5 @@
 
 GET         /v2/metadata        v2.controllers.MetadataController.getMetadata(ids)
 POST        /v2/metadata        v2.controllers.MetadataController.getMultiMetadata
+GET         /v2/streaming       v2.controllers.MetadataController.streamMetadata(ids)
+POST        /v2/streaming       v2.controllers.MetadataController.streamMultiMetadata

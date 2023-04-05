@@ -20,7 +20,7 @@ class MetadataController @Inject()(metadataDao: MetadataDao,
           else {
             val ids = idsCsv.split("""\|""").toSet
             metadataDao.getMetadata(ids).map(publisher =>
-              Ok.chunked(Source.fromPublisher(publisher))
+              Ok.chunked(Source.fromPublisher(publisher).map(_.toString).intersperse(System.lineSeparator))
             )
           }
       }
@@ -35,7 +35,7 @@ class MetadataController @Inject()(metadataDao: MetadataDao,
           else {
             val ids = req.body.split("""[\|\n]""").toSet
             metadataDao.getMetadata(ids).map(publisher =>
-              Ok.chunked(Source.fromPublisher(publisher))
+              Ok.chunked(Source.fromPublisher(publisher).map(_.toString).intersperse(System.lineSeparator))
             )
           }
       }

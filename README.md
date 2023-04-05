@@ -56,7 +56,7 @@ POST  /api/v2/metadata
 Note: For the POST request, `Content-type: text/plain` must be set in the request
 
 #### Response
-```json
+```
 {
   "found": {
       "hvd.32044038401683": {
@@ -73,7 +73,7 @@ Note: For the POST request, `Content-type: text/plain` must be set in the reques
 
 #### Example
 
-`curl -v -X GET 'http://HOSTNAME:PORT/api/v2/metadata?ids=hvd.32044038401683|SOMEMISSINGID'
+`curl -v -X GET 'http://HOSTNAME:PORT/api/v2/metadata?ids=hvd.32044038401683|SOMEMISSINGID`
 
 Returns:
 ```json
@@ -168,7 +168,7 @@ where each line represents one metadata record. Any volume IDs requested that ar
 
 #### Example
 
-`curl -v -X GET 'http://HOSTNAME:PORT/api/v2/streaming?ids=hvd.32044038401683|SOMEMISSINGID'`
+`curl -v -X GET 'http://HOSTNAME:PORT/api/v2/streaming?ids=hvd.32044038401683|SOMEMISSINGID`
 
 Returns:
 ```

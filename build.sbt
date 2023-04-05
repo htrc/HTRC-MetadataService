@@ -29,7 +29,8 @@ inThisBuild(Seq(
     "nexus.htrc.illinois.edu", // host
     "drhtrc", // user
     sys.env.getOrElse("HTRC_NEXUS_DRHTRC_PWD", "abc123") // password
-  )
+  ),
+  evictionErrorLevel := Level.Warn
 ))
 
 lazy val ammoniteSettings = Seq(

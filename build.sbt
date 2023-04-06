@@ -1,3 +1,5 @@
+import com.typesafe.sbt.packager.docker._
+
 showCurrentGitBranch
 
 inThisBuild(Seq(
@@ -69,6 +71,8 @@ lazy val dockerSettings = Seq(
     dockerBaseImage := "docker-registry.htrc.indiana.edu/java8",
     dockerExposedPorts := Seq(9000),
     dockerRepository := Some("docker-registry.htrc.indiana.edu"),
+    dockerPermissionStrategy := DockerPermissionStrategy.CopyChown,
+//    dockerChmodType := DockerChmodType.UserGroupWriteExecute,
     dockerUpdateLatest := true
 )
 

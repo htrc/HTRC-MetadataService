@@ -74,7 +74,7 @@ lazy val dockerSettings = Seq(
 
 val configureDependencyByPlatform = settingKey[ModuleID]("Dynamically change reference to the jars dependency depending on the platform")
 configureDependencyByPlatform := {
-  System.getProperty("os.name").toLowerCase match {
+  System.getenv.getOrDefault("OS_NAME", System.getProperty("os.name")).toLowerCase match {
     case mac if mac.contains("mac")  => "org.reactivemongo" % "reactivemongo-shaded-native" % "1.1.0-RC6-osx-x86-64" % "runtime"
     case linux if linux.contains("linux") => "org.reactivemongo" % "reactivemongo-shaded-native" % "1.1.0-RC6-linux-x86-64" % "runtime"
     case osName => throw new RuntimeException(s"Unsupported operating system: $osName")

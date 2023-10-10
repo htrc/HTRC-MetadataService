@@ -1,4 +1,4 @@
-import com.typesafe.sbt.packager.docker._
+import com.typesafe.sbt.packager.docker.*
 
 showCurrentGitBranch
 
@@ -6,7 +6,7 @@ inThisBuild(Seq(
   organization := "org.hathitrust.htrc",
   organizationName := "HathiTrust Research Center",
   organizationHomepage := Some(url("https://www.hathitrust.org/htrc")),
-  scalaVersion := "2.13.10",
+  scalaVersion := "2.13.12",
   scalacOptions ++= Seq(
     "-feature",
     "-deprecation",
@@ -31,8 +31,7 @@ inThisBuild(Seq(
     "nexus.htrc.illinois.edu", // host
     "drhtrc", // user
     sys.env.getOrElse("HTRC_NEXUS_DRHTRC_PWD", "abc123") // password
-  ),
-  evictionErrorLevel := Level.Warn
+  )
 ))
 
 lazy val ammoniteSettings = Seq(
@@ -41,7 +40,7 @@ lazy val ammoniteSettings = Seq(
       val version = scalaBinaryVersion.value match {
         case "2.10" => "1.0.3"
         case "2.11" => "1.6.7"
-        case _ ⇒  "2.5.6"
+        case _ ⇒  "2.5.11"
       }
       "com.lihaoyi" % "ammonite" % version % Test cross CrossVersion.full
     },
@@ -107,5 +106,3 @@ lazy val `htrc-metadata-service` = (project in file("."))
     ),
     routesGenerator := InjectedRoutesGenerator
   )
-
-

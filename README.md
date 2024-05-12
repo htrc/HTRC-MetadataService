@@ -1,4 +1,4 @@
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/htrc/HTRC-MetadataService/ci.yml?branch=develop)](https://github.com/htrc/HTRC-MetadataService/actions/workflows/ci.yml)
+[![Scala CI](https://github.com/htrc/HTRC-MetadataService/actions/workflows/ci.yml/badge.svg)](https://github.com/htrc/HTRC-MetadataService/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/github/htrc/HTRC-MetadataService/branch/develop/graph/badge.svg?token=LILLTB9G4K)](https://codecov.io/github/htrc/HTRC-MetadataService)
 [![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/htrc/HTRC-MetadataService?include_prereleases&sort=semver)](https://github.com/htrc/HTRC-MetadataService/releases/latest)
 

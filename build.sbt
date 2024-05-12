@@ -1,4 +1,4 @@
-import com.typesafe.sbt.packager.docker._
+import com.typesafe.sbt.packager.docker.*
 
 showCurrentGitBranch
 
@@ -6,7 +6,7 @@ inThisBuild(Seq(
   organization := "org.hathitrust.htrc",
   organizationName := "HathiTrust Research Center",
   organizationHomepage := Some(url("https://www.hathitrust.org/htrc")),
-  scalaVersion := "2.13.10",
+  scalaVersion := "2.13.14",
   scalacOptions ++= Seq(
     "-feature",
     "-deprecation",
@@ -31,8 +31,7 @@ inThisBuild(Seq(
     "nexus.htrc.illinois.edu", // host
     "drhtrc", // user
     sys.env.getOrElse("HTRC_NEXUS_DRHTRC_PWD", "abc123") // password
-  ),
-  evictionErrorLevel := Level.Warn
+  )
 ))
 
 lazy val ammoniteSettings = Seq(
@@ -41,7 +40,7 @@ lazy val ammoniteSettings = Seq(
       val version = scalaBinaryVersion.value match {
         case "2.10" => "1.0.3"
         case "2.11" => "1.6.7"
-        case _ ⇒  "2.5.6"
+        case _ ⇒  "3.0.0-M1-24-26133e66"
       }
       "com.lihaoyi" % "ammonite" % version % Test cross CrossVersion.full
     },
@@ -67,20 +66,22 @@ lazy val buildInfoSettings = Seq(
 )
 
 lazy val dockerSettings = Seq(
-    Docker / maintainer := "Boris Capitanu <capitanu@illinois.edu>",
-    dockerBaseImage := "docker-registry.htrc.indiana.edu/java8",
-    dockerExposedPorts := Seq(9000),
-    dockerRepository := Some("docker-registry.htrc.indiana.edu"),
-    dockerPermissionStrategy := DockerPermissionStrategy.CopyChown,
-//    dockerChmodType := DockerChmodType.UserGroupWriteExecute,
-    dockerUpdateLatest := true
+  Docker / maintainer := "Boris Capitanu <capitanu@illinois.edu>",
+  dockerBaseImage := "eclipse-temurin:21-jre",
+  dockerExposedPorts := Seq(9000),
+  dockerRepository := Some("docker-registry.htrc.indiana.edu"),
+  dockerPermissionStrategy := DockerPermissionStrategy.CopyChown,
+//  dockerChmodType := DockerChmodType.UserGroupWriteExecute,
+  dockerUpdateLatest := true
 )
 
 val configureDependencyByPlatform = settingKey[ModuleID]("Dynamically change reference to the jars dependency depending on the platform")
 configureDependencyByPlatform := {
-  System.getenv.getOrDefault("OS_NAME", System.getProperty("os.name")).toLowerCase match {
-    case mac if mac.contains("mac")  => "org.reactivemongo" % "reactivemongo-shaded-native" % "1.1.0-RC6-osx-x86-64" % "runtime"
-    case linux if linux.contains("linux") => "org.reactivemongo" % "reactivemongo-shaded-native" % "1.1.0-RC6-linux-x86-64" % "runtime"
+  System.getenv.getOrDefault("OS_NAME", s"${System.getProperty("os.name")} ${System.getProperty("os.arch")}").toLowerCase match {
+    case mac_arm if mac_arm.contains("mac") && mac_arm.contains("aarch64")  => "org.reactivemongo" % "reactivemongo-shaded-native" % "1.1.0-RC6-osx-aarch-64" % "runtime"
+    case mac_x86_64 if mac_x86_64.contains("mac")  => "org.reactivemongo" % "reactivemongo-shaded-native" % "1.1.0-RC6-osx-x86-64" % "runtime"
+    case linux_arm if linux_arm.contains("linux") && linux_arm.contains("aarch64") => "org.reactivemongo" % "reactivemongo-shaded-native" % "1.1.0-RC6-linux-aarch-64" % "runtime"
+    case linux_x86_64 if linux_x86_64.contains("linux") => "org.reactivemongo" % "reactivemongo-shaded-native" % "1.1.0-RC6-linux-x86-64" % "runtime"
     case osName => throw new RuntimeException(s"Unsupported operating system: $osName")
   }
 }
@@ -98,14 +99,12 @@ lazy val `htrc-metadata-service` = (project in file("."))
     libraryDependencies ++= Seq(
       guice,
       filters,
-      "com.typesafe.play"             %% "play-streams"                     % "2.8.19",
-      "org.reactivemongo"             %% "play2-reactivemongo"              % "1.1.0-play28-RC9"
+      "com.typesafe.play"             %% "play-streams"                     % "2.9.3",
+      "org.reactivemongo"             %% "play2-reactivemongo"              % "1.1.0.play29-RC12"
         exclude("org.slf4j", "slf4j-simple"),
-      "org.reactivemongo"             %% "reactivemongo-akkastream"         % "1.1.0-RC9",
+      "org.reactivemongo"             %% "reactivemongo-akkastream"         % "1.1.0-RC12",
       configureDependencyByPlatform.value,
-      "org.scalatestplus.play"        %% "scalatestplus-play"               % "5.1.0"   % Test
+      "org.scalatestplus.play"        %% "scalatestplus-play"               % "7.0.1"   % Test
     ),
     routesGenerator := InjectedRoutesGenerator
   )
-
-

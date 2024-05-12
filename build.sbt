@@ -66,13 +66,13 @@ lazy val buildInfoSettings = Seq(
 )
 
 lazy val dockerSettings = Seq(
-    Docker / maintainer := "Boris Capitanu <capitanu@illinois.edu>",
-    dockerBaseImage := "docker-registry.htrc.indiana.edu/java8",
-    dockerExposedPorts := Seq(9000),
-    dockerRepository := Some("docker-registry.htrc.indiana.edu"),
-    dockerPermissionStrategy := DockerPermissionStrategy.CopyChown,
-//    dockerChmodType := DockerChmodType.UserGroupWriteExecute,
-    dockerUpdateLatest := true
+  Docker / maintainer := "Boris Capitanu <capitanu@illinois.edu>",
+  dockerBaseImage := "eclipse-temurin:21-jre",
+  dockerExposedPorts := Seq(9000),
+  dockerRepository := Some("docker-registry.htrc.indiana.edu"),
+  dockerPermissionStrategy := DockerPermissionStrategy.CopyChown,
+//  dockerChmodType := DockerChmodType.UserGroupWriteExecute,
+  dockerUpdateLatest := true
 )
 
 val configureDependencyByPlatform = settingKey[ModuleID]("Dynamically change reference to the jars dependency depending on the platform")

@@ -80,7 +80,8 @@ configureDependencyByPlatform := {
   System.getenv.getOrDefault("OS_NAME", s"${System.getProperty("os.name")} ${System.getProperty("os.arch")}").toLowerCase match {
     case mac_arm if mac_arm.contains("mac") && mac_arm.contains("aarch64")  => "org.reactivemongo" % "reactivemongo-shaded-native" % "1.1.0-RC6-osx-aarch-64" % "runtime"
     case mac_x86_64 if mac_x86_64.contains("mac")  => "org.reactivemongo" % "reactivemongo-shaded-native" % "1.1.0-RC6-osx-x86-64" % "runtime"
-    case linux if linux.contains("linux") => "org.reactivemongo" % "reactivemongo-shaded-native" % "1.1.0-RC6-linux-x86-64" % "runtime"
+    case linux_arm if linux_arm.contains("linux") && linux_arm.contains("aarch64") => "org.reactivemongo" % "reactivemongo-shaded-native" % "1.1.0-RC6-linux-aarch-64" % "runtime"
+    case linux_x86_64 if linux_x86_64.contains("linux") => "org.reactivemongo" % "reactivemongo-shaded-native" % "1.1.0-RC6-linux-x86-64" % "runtime"
     case osName => throw new RuntimeException(s"Unsupported operating system: $osName")
   }
 }
